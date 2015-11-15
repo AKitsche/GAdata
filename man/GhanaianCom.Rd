@@ -36,8 +36,8 @@ mosaicplot(with(GhanaianCom, table(y, Genotype)),main="")
 #calculating minor allele frequency
 sum(GhanaianCom[,3],2*GhanaianCom[,4])/(2*nrow(GhanaianCom))
 #in this case "G" is the minor allele
-GhanaianCom <- factor(GhanaianCom$Genotype, levels=c("TT","GT","GG"))
-GhanaianCom <- as.numeric(GhanaianCom$Genotype)
+GhanaianCom$Genotype <- factor(GhanaianCom$Genotype, levels=c("TT","GT","GG"))
+GhanaianCom$GenNum <- as.numeric(GhanaianCom$Genotype)
 
 #pseudo numeric variables for different modes of inheritance
 GhanaianCom$Add <- c(0, 0.5, 1)[GhanaianCom$GenNum]

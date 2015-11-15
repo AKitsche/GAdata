@@ -36,7 +36,14 @@ kapmei <- survfit(Surv(pheno, cens) ~ geno, data = listerD5Mit357)
 plot(kapmei, lty = c(3,4,1))
 legend("topright", legend = c("aa", "Aa", "AA"), lty = c(3,4,1))
 
+table(listerD5Mit357$geno)#A is the minor allele
+
+listerD5Mit357$numgeno <- as.numeric(listerD5Mit357$geno)
 #Approach using three different genetic models
+listerD5Mit357$add <- c(0, 0.5, 1)[listerD5Mit357$numgeno]
+listerD5Mit357$rec <- c(0, 0, 1)[listerD5Mit357$numgeno]
+listerD5Mit357$dom <- c(0, 1, 1)[listerD5Mit357$numgeno]
+
 mdom2 <- coxph(Surv(pheno, cens) ~ dom, data=listerD5Mit357) #lin reg dom
 madd2 <- coxph(Surv(pheno, cens) ~ add, data=listerD5Mit357) #lin reg add
 mrec2 <- coxph(Surv(pheno, cens) ~ rec, data=listerD5Mit357) #lin reg rec

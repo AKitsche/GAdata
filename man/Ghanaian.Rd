@@ -19,6 +19,7 @@ Case-control study of severe falciparum malaria for association with the SNP rs1
   }
 }
 \details{
+
 }
 \source{
 Timmann C, Thye T, Vens M et al: Genome-wide association study indicates two novel resistance loci for severe malaria. Nature 2012; 489: 443-446.

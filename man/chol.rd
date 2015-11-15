@@ -41,7 +41,7 @@ data(chol)
 boxplot(tc ~ genotype, data=chol)
 
 #calculating the allele frequencies
-table(chol)#A is the minor allele
+table(chol$genotype)#A is the minor allele
 
 #Approach using three different genetic models
 madd <- lm(tc~ add, data=chol) #lin reg add

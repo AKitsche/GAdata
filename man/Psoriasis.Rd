@@ -31,12 +31,18 @@ L.A Hothorn and T. Hothorn. Order-restricted scores test for the evaluation of p
 }
 \examples{
 data(Psoriasis)
+
 with(Psoriasis, table(Genotype, group, locus))
 
+Psoriasis$GenNum <- as.numeric(Psoriasis$Genotype)
+Psoriasis$Add <- c(0, 0.5, 1)[Psoriasis$GenNum]
+Psoriasis$Dom <- c(0, 1, 1)[Psoriasis$GenNum]
+Psoriasis$Rec <- c(0, 0, 1)[Psoriasis$GenNum]
+
 #Approach using three different genetic models
-GLMdom <- glm(group2 ~ Dom * locus ,family=binomial, data=Psoriasis)
-GLMadd <- glm(group2 ~ Add * locus ,family=binomial, data=Psoriasis)
-GLMrec <- glm(group2 ~ Rec * locus ,family=binomial, data=Psoriasis)
+GLMdom <- glm(group ~ Dom * locus ,family=binomial, data=Psoriasis)
+GLMadd <- glm(group ~ Add * locus ,family=binomial, data=Psoriasis)
+GLMrec <- glm(group ~ Rec * locus ,family=binomial, data=Psoriasis)
 
 #Matrix that defines regression slopes for each locus
 K <- matrix(c(0, 1, 0, 0,

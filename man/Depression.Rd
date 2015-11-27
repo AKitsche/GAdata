@@ -160,9 +160,9 @@ colnames(Results) <- c("Estimate", "Std. Error", "t value", "Pr(>|t|)")
 Results
 
 
-##############################################################
-########    Analysis Sex-specific mode of inheritance  #######
-##############################################################
+#################################################################
+########    Analysis Gender-specific mode of inheritance  #######
+#################################################################
 # Building subsets with males and females
 data(Depression)
 
@@ -203,5 +203,39 @@ g <- glht(mmm(m1=domAll, m2=addAll, m3=recAll,
               m4="dom=0", m5="add=0", m6="rec=0",
               m7="dom=0", m8="add=0", m9="rec=0"))
 summary(g)#multiplicity adjusted p-values
+
+#################################################################
+########    Analysis using non-paramteric procedures      #######
+#################################################################
+data(Depression)
+Depression <- Depression[Depression$Gender=="females",]
+Depression$numgeno <- as.numeric(Depression$Genotyp)
+Depression$add <- c(0, 0.5, 1)[Depression$numgeno]
+Depression$rec <- c(0, 0, 1)[Depression$numgeno]
+Depression$dom <- c(0, 1, 1)[Depression$numgeno]
+
+Depression$rD <- rank(Depression$SOC)
+library(coin)
+Depression$iD <- normal_trafo(Depression$SOC)
+RdomS <- lm(rD ~ dom , data=Depression)
+RaddS <- lm(rD ~ add , data=Depression)
+RrecS <- lm(rD ~ rec , data=Depression)
+IdomS <- lm(iD ~ dom , data=Depression)
+IaddS <- lm(iD ~ add , data=Depression)
+IrecS <- lm(iD ~ rec , data=Depression)
+
+library(multcomp)
+npTest <- glht(mmm(m1=RdomS, m2=RaddS, m3=RrecS),
+               mlf(m1="dom=0", m2="add=0", m3="rec=0"))
+summary(npTest)
+invTest <- glht(mmm(m1=IdomS, m2=IaddS, m3=IrecS),
+                mlf(m1="dom=0", m2="add=0", m3="rec=0"))
+summary(invTest)
+both <- glht(mmm(m1 = IdomS, m2 = IaddS, m3 = IrecS,
+                 m4 = RdomS, m5 = RaddS, m6 = RrecS),
+             mlf(m1 = "dom = 0", m2 = "add = 0", m3 = "rec = 0", 
+                 m4 = "dom = 0", m5 = "add = 0", m6 = "rec = 0"))
+summary(both)
+
 }
 \keyword{datasets}
